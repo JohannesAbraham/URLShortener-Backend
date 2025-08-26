@@ -35,7 +35,11 @@ function createShortUrl(longUrl) {
 app.get("/admin/urls", async (req, res) => {
   try {
     const urls = await Url.find({}, { _id: 0, __v: 0 });
-    res.json(urls);
+    const formatted = urls.map(u => ({
+      longUrl: u.longUrl,
+      shortUrl: `${process.env.BASE_URL}/short/${u.shortUrl}`
+    }));
+    res.json(formatted);
   } catch (err) {
     console.error(err);
     res.status(500).json({ message: "Server error" });
