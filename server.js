@@ -46,15 +46,17 @@ app.post("/shorten", async (req, res) => {
   const { longUrl } = req.body;
 
   let existing = await Url.findOne({ longUrl });
-  if (existing)
-    return res.json({ shortUrl: `http://localhost:5000/short/${existing.shortUrl}` });
+  if (existing) {
+    return res.json({ shortUrl: `${process.env.BASE_URL}/short/${existing.shortUrl}` });
+  }
 
-  const short = createShortUrl(longUrl);
+  const short = createShortUrl(longUrl); // only the slug
   const url = new Url({ longUrl, shortUrl: short });
   await url.save();
 
-  res.json({ shortUrl: `http://localhost:5000/short/${short}` });
+  res.json({ shortUrl: `${process.env.BASE_URL}/short/${short}` });
 });
+
 
 app.get("/short/:shortURL", async (req, res) => {
   const { shortURL } = req.params;
