@@ -57,7 +57,6 @@ app.post("/shorten", async (req, res) => {
   res.json({ shortUrl: `${process.env.BASE_URL}/short/${short}` });
 });
 
-
 app.get("/short/:shortURL", async (req, res) => {
   const { shortURL } = req.params;
   const url = await Url.findOne({ shortUrl: shortURL });
